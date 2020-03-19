@@ -9,6 +9,7 @@
 #define ONLINEFUSIONVIEWER_HPP_
 
 #include <QGLViewer/qglviewer.h>
+#include <QGLViewer/manipulatedFrame.h>
 #include <camerautils/camerautils.hpp>
 //#include <fusionGPU/geometryfusion_single_aos.hpp>
 #include <fusion/geometryfusion_mipmap_cpu.hpp>

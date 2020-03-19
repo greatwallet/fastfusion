@@ -1,6 +1,7 @@
 #ifndef OCV_TOOLS_H
 #define OCV_TOOLS_H
 
+#define OPENCV_TRAITS_ENABLE_DEPRECATED
 #include <string>
 #include <opencv2/opencv.hpp>
 

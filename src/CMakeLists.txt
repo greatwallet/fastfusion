@@ -23,7 +23,7 @@ message(STATUS "Found qglviewer2, linking QGLViewer")
 set(QGLVIEWER QGLViewer)
 else()
 message(STATUS "Did not find qglviewer2, linking qglviewer-qt4")
-set(QGLVIEWER qglviewer-qt4)
+set(QGLVIEWER QGLViewer-qt4)
 endif()
 
 

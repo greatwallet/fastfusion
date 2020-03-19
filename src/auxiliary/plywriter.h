@@ -1,6 +1,7 @@
 #ifndef WRITEPLY_H
 #define WRITEPLY_H
 
+#define OPENCV_TRAITS_ENABLE_DEPRECATED
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <fstream>
