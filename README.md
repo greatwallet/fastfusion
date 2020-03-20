@@ -1,45 +1,72 @@
-fastfusion
+fastfusion-built-in-ubuntu-16.04
 ==========
 
 Volumetric 3D Mapping in Real-Time on a CPU 
 
 This code implements the approach for real-time 3D mapping on a CPU as
-described in the following research paper:
+described in the following research paper: [Volumetric 3D Mapping in Real-Time on a CPU (F. Steinbruecker, J. Sturm, D. Cremers), In Int. Conf. on Robotics and Automation, 2014.](http://vision.in.tum.de/_media/spezial/bib/steinbruecker_etal_icra2014.pdf)
 
-http://vision.in.tum.de/_media/spezial/bib/steinbruecker_etal_icra2014.pdf
+This is an unofficial fork of fastfusion repo and aims at assisting those who want to build `fastfusion`. Also, the built binary has been released in this repo.
 
-Volumetric 3D Mapping in Real-Time on a CPU (F. Steinbruecker, J. Sturm, D. Cremers), 
-In Int. Conf. on Robotics and Automation, 2014.
+[original repo](https://github.com/tum-vision/fastfusion); [paper](http://vision.in.tum.de/_media/spezial/bib/steinbruecker_etal_icra2014.pdf); [video demo](http://youtu.be/7s9JePSln-M); 
 
 ![alt tag](http://vision.in.tum.de/_media/data/software/fastfusion_small.png)
 
-Demo video:
-http://youtu.be/7s9JePSln-M
+Test Environment
+============
 
-```
-@string{icra="Int. Conf. on Robotics and Automation"}
-@inproceedings{Steinbruecker-etal-icra14,
-  author = {F. Steinbruecker and J. Sturm and D. Cremers},
-  title = {Volumetric 3D Mapping in Real-Time on a CPU},
-  booktitle = icra,
-  year = {2014},
-  address = {Hongkong, China},
-  titleurl = {steinbruecker_etal_icra2014.pdf},
-  topic = {3D Reconstruction},
-  keywords =  {RGB-D,Fusion,3d-reconstruction}
-}
-```
+- ubuntu 16.04 LTS
+- Qt 4.8.7
+- opencv 3.4.9
+- headers: boost, eigen, QGLViewer, Glew, Freeglut 
 
 Installation
 ============
 
-    $ git clone https://github.com/tum-vision/fastfusion.git`
+1. Set up Qt 4.x from [doc](https://doc.qt.io/archives/qt-4.8/qt-embedded-install.html)
 
-    $ cd fastfusion
-  
-    $ cmake .
+2. Set up opencv according to [doc](https://docs.opencv.org/3.4/d2/de6/tutorial_py_setup_in_ubuntu.html)
 
-    $ make
+3. Prepare headers
+```/usr/bin/sh
+# install headers
+# Note: if something goes wrong with 'libqglviewer-dev', replace it with ' libqglviewer-dev-qt4'
+sudo apt-get update
+sudo apt-get install libboost-all-dev libeigen3-dev libqglviewer-dev libglew-dev freeglut3-dev
+
+# install packages
+git clone https://github.com/tum-vision/fastfusion.git`
+cd fastfusion
+cmake .
+make
+```
+
+Change Logs
+======================
+
+There are some bugs in the original repos in test environment. Thus some changes have to be made in the scripts. I list them here if anyone is willing to build from original codes.
+
+1. In [`fastfusion/src/CMakeLists.txt`](https://github.com/tum-vision/fastfusion/blob/master/src/CMakeLists.txt#L26)row 26, replace `set(QGLVIEWER qglviewer-qt4)` to   `set(QGLVIEWER QGLViewer-qt4)`
+
+2. In [`fastfusion/src/auxiliary/plywriter.hpp`] and [`fastfusion/src/auxiliary/ocv_tools.hpp`], if you come across make error like 
+```
+[script].cpp: [row]:[col]: error: ‘type’ is not a member of ‘cv::DataType<cv::Vec<[int, float, char, ...], [length]> >’ ...
+```
+
+Then it indicates that the opencv you are using is deprecating some funtions 
+add `#define OPENCV_TRAITS_ENABLE_DEPRECATED` before `#include <opencv2/opencv.hpp>` in the correponding `.h` or `.hpp` file.
+
+3. Incomplete class definition in `qglviewer` caused by mistypo:
+If you come across error like 
+```
+onlinefusionviewer.cpp: [row]:[col]: error: invalid use of incomplete type ‘class qglviewer::ManipulatedFrame’ ...
+```
+
+Then adding `#include <QGLViewer/manipulatedFrame.h>` in `fastfusion/src/onlinefusionview.hpp` may solve it.
+
+Built Binary
+======================
+Please download it in [release](https://github.com/greatwallet/fastfusion/releases)
 
 Preparation of the data
 ======================
@@ -184,3 +211,6 @@ Where:
 ```
 ![alt tag](http://vision.in.tum.de/_media/data/software/screenshot_fastfusion.png)
 
+Contact
+===============
+Currently I am applying on the code. If you have some good idea, please reach out to `cxt_tsinghua@126.com`
