@@ -8,7 +8,9 @@ described in the following research paper: [Volumetric 3D Mapping in Real-Time o
 
 This is an unofficial fork of fastfusion repo and aims at assisting those who want to build `fastfusion`. Also, the built binary has been released in this repo.
 
-[original repo](https://github.com/tum-vision/fastfusion); [paper](http://vision.in.tum.de/_media/spezial/bib/steinbruecker_etal_icra2014.pdf); [video demo](http://youtu.be/7s9JePSln-M); 
+- [original repo](https://github.com/tum-vision/fastfusion);  
+- [paper](http://vision.in.tum.de/_media/spezial/bib/steinbruecker_etal_icra2014.pdf);    
+- [video demo](http://youtu.be/7s9JePSln-M); 
 
 ![alt tag](http://vision.in.tum.de/_media/data/software/fastfusion_small.png)
 
@@ -59,7 +61,7 @@ sudo apt-get update
 sudo apt-get install libboost-all-dev libeigen3-dev libglew-dev freeglut3-dev
 
 # install packages
-git clone https://github.com/tum-vision/fastfusion.git`
+git clone https://github.com/tum-vision/fastfusion.git
 cd fastfusion
 cmake .
 make
@@ -72,7 +74,7 @@ There are some bugs in the original repos in test environment. Thus some changes
 
 1. In [`fastfusion/src/CMakeLists.txt`](https://github.com/tum-vision/fastfusion/blob/master/src/CMakeLists.txt#L26)row 26, replace `set(QGLVIEWER qglviewer-qt4)` to   `set(QGLVIEWER QGLViewer-qt4)`
 
-2. In [`fastfusion/src/auxiliary/plywriter.hpp`] and [`fastfusion/src/auxiliary/ocv_tools.hpp`], if you come across make error like 
+2. In `fastfusion/src/auxiliary/plywriter.hpp` and `fastfusion/src/auxiliary/ocv_tools.hpp`, if you come across make error like 
 ```
 [script].cpp: [row]:[col]: error: ‘type’ is not a member of ‘cv::DataType<cv::Vec<[int, float, char, ...], [length]> >’ ...
 ```
