@@ -90,10 +90,6 @@ onlinefusionviewer.cpp: [row]:[col]: error: invalid use of incomplete type ‘cl
 
 Then adding `#include <QGLViewer/manipulatedFrame.h>` in `fastfusion/src/onlinefusionview.hpp` may solve it.
 
-4. When running `fastfusion/bin/onlinefusion`, if you came across error like below 
-
-
-
 
 Built Binary
 ======================
