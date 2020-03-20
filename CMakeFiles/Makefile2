@@ -89,9 +89,9 @@ src/preinstall: src/fusion/preinstall
 # Target rules for target src/CMakeFiles/onlinefusion.dir
 
 # All Build rule for target.
-src/CMakeFiles/onlinefusion.dir/all: src/fusion/CMakeFiles/geometryfusion_aos.dir/all
 src/CMakeFiles/onlinefusion.dir/all: src/camerautils/CMakeFiles/camerautils.dir/all
 src/CMakeFiles/onlinefusion.dir/all: src/auxiliary/CMakeFiles/auxiliary.dir/all
+src/CMakeFiles/onlinefusion.dir/all: src/fusion/CMakeFiles/geometryfusion_aos.dir/all
 src/CMakeFiles/onlinefusion.dir/all: src/fusion/CMakeFiles/geometryfusion_mipmap_cpu.dir/all
 	$(MAKE) -f src/CMakeFiles/onlinefusion.dir/build.make src/CMakeFiles/onlinefusion.dir/depend
 	$(MAKE) -f src/CMakeFiles/onlinefusion.dir/build.make src/CMakeFiles/onlinefusion.dir/build

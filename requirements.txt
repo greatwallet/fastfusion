@@ -1,7 +1,0 @@
-opencv
-Qt4.x
-libboost-all-dev
-eigen
-qglviewer(libqglviewer-dev-qt4)
-libglew-dev
-freeglut3-dev
