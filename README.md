@@ -18,7 +18,8 @@ Test Environment
 - ubuntu 16.04 LTS
 - Qt 4.8.7
 - opencv 3.4.9
-- headers: boost, eigen, QGLViewer, Glew, Freeglut 
+- QGLViewer 2.6.3
+- headers: boost, eigen, Glew, Freeglut 
 
 Installation
 ============
@@ -63,6 +64,35 @@ onlinefusionviewer.cpp: [row]:[col]: error: invalid use of incomplete type ‘cl
 ```
 
 Then adding `#include <QGLViewer/manipulatedFrame.h>` in `fastfusion/src/onlinefusionview.hpp` may solve it.
+
+4. When running `fastfusion/bin/onlinefusion`, if you came across error like below 
+
+```
+*** Error in `./bin/onlinefusion': realloc(): invalid pointer: 0x00007f541ff83840 ***
+Aborted (core dumped)
+```
+According to [issue](https://github.com/tum-vision/fastfusion/issues/9) and related issue [link](https://github.com/tum-vision/lsd_slam/issues/222), it's because of a conflict between versions 4 and 5 of Qt. You should perform following commands:
+
+- Completely remove Qt5 `sudo apt-get purge --auto-remove qt5-default`
+- Download QGLViewer < 2.7.0 (which replace `QGLWidget` with `QGLOpenWidget` and will cause error to building process). 
+    - Download src code from [libQGLViewer-2.6.3.tar.gz download link](http://www.libqglviewer.com/src/libQGLViewer-2.6.3.tar.gz)
+    - then perform:
+        ```
+        # build QGLViewer
+        tar -xvf libQGLViewer-2.6.3.tar.gz
+        cd libQGLViewer-2.6.3/QGLViewer
+        qmake
+        make 
+        sudo make install
+        
+        # link the library for cmake 
+        sudo ln -s /usr/lib/x86_64-linux-gnu/libQGLViewer-qt4.so.2.6.3 /usr/lib/libQGLViewer.so
+        sudo ln -s /usr/lib/x86_64-linux-gnu/libQGLViewer-qt4.so.2.6.3 /usr/lib/libQGLViewer-qt4.so
+        sudo ln -s /usr/lib/x86_64-linux-gnu/libQGLViewer-qt4.so.2.6.3 /usr/lib/libqglviewer-qt4.so
+        ```
+    Then rebuild `fastfusion` with the operations above.
+
+
 
 Built Binary
 ======================
