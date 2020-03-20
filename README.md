@@ -28,12 +28,35 @@ Installation
 
 2. Set up opencv according to [doc](https://docs.opencv.org/3.4/d2/de6/tutorial_py_setup_in_ubuntu.html)
 
-3. Prepare headers
+3. Prepare QGLViewer (< 2.7.0)( QGLViewer>=2.7.0 replace `QGLWidget` with `QGLOpenWidget` and will cause error to building process). 
+<b>Note: </b> You should completely remove Qt5 by running `sudo apt-get purge --auto-remove qt5-default`. Otherwise, according to [issue](https://github.com/tum-vision/fastfusion/issues/9) and related issue [link](https://github.com/tum-vision/lsd_slam/issues/222), a conflict between versions 4 and 5 of Qt will emerge:
+```
+*** Error in `./bin/onlinefusion': realloc(): invalid pointer: 0x00007f541ff83840 ***
+Aborted (core dumped)
+```
+
+- Download src code from [libQGLViewer-2.6.3.tar.gz download link](http://www.libqglviewer.com/src/libQGLViewer-2.6.3.tar.gz)
+- then perform:
+    ```
+    # build QGLViewer
+    tar -xvf libQGLViewer-2.6.3.tar.gz
+    cd libQGLViewer-2.6.3/QGLViewer
+    qmake
+    make 
+    sudo make install
+
+    # link the library for cmake 
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libQGLViewer-qt4.so.2.6.3 /usr/lib/libQGLViewer.so
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libQGLViewer-qt4.so.2.6.3 /usr/lib/libQGLViewer-qt4.so
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libQGLViewer-qt4.so.2.6.3 /usr/lib/libqglviewer-qt4.so
+    ```
+Then rebuild `fastfusion` with the operations above.
+
+4. Prepare headers
 ```/usr/bin/sh
 # install headers
-# Note: if something goes wrong with 'libqglviewer-dev', replace it with ' libqglviewer-dev-qt4'
 sudo apt-get update
-sudo apt-get install libboost-all-dev libeigen3-dev libqglviewer-dev libglew-dev freeglut3-dev
+sudo apt-get install libboost-all-dev libeigen3-dev libglew-dev freeglut3-dev
 
 # install packages
 git clone https://github.com/tum-vision/fastfusion.git`
@@ -67,30 +90,6 @@ Then adding `#include <QGLViewer/manipulatedFrame.h>` in `fastfusion/src/onlinef
 
 4. When running `fastfusion/bin/onlinefusion`, if you came across error like below 
 
-```
-*** Error in `./bin/onlinefusion': realloc(): invalid pointer: 0x00007f541ff83840 ***
-Aborted (core dumped)
-```
-According to [issue](https://github.com/tum-vision/fastfusion/issues/9) and related issue [link](https://github.com/tum-vision/lsd_slam/issues/222), it's because of a conflict between versions 4 and 5 of Qt. You should perform following commands:
-
-- Completely remove Qt5 `sudo apt-get purge --auto-remove qt5-default`
-- Download QGLViewer < 2.7.0 (which replace `QGLWidget` with `QGLOpenWidget` and will cause error to building process). 
-    - Download src code from [libQGLViewer-2.6.3.tar.gz download link](http://www.libqglviewer.com/src/libQGLViewer-2.6.3.tar.gz)
-    - then perform:
-        ```
-        # build QGLViewer
-        tar -xvf libQGLViewer-2.6.3.tar.gz
-        cd libQGLViewer-2.6.3/QGLViewer
-        qmake
-        make 
-        sudo make install
-        
-        # link the library for cmake 
-        sudo ln -s /usr/lib/x86_64-linux-gnu/libQGLViewer-qt4.so.2.6.3 /usr/lib/libQGLViewer.so
-        sudo ln -s /usr/lib/x86_64-linux-gnu/libQGLViewer-qt4.so.2.6.3 /usr/lib/libQGLViewer-qt4.so
-        sudo ln -s /usr/lib/x86_64-linux-gnu/libQGLViewer-qt4.so.2.6.3 /usr/lib/libqglviewer-qt4.so
-        ```
-    Then rebuild `fastfusion` with the operations above.
 
 
 
@@ -127,15 +126,16 @@ RGB-D benchmark.
 
     $ tar xvzf rgbd_dataset_freiburg3_long_office_household.tgz
 
-Now we need to generate the text file. For this, we use the associate.py tool from
-the RGB-D benchmark website. We need to run it twice, as we join the
-camera poses, the depth image list and the color image list into a single file:
+Now we need to generate the text file. For this, we use the [associate.py](https://github.com/greatwallet/fastfusion/blob/master/associate.py) tool from [TUM RGB-D Benchmark Tools](https://vision.in.tum.de/data/datasets/rgbd-dataset/tools)
+We need to run it twice, as we join the camera poses, the depth image list and the color image list into a single file:
 
+    $ pip install numpy
+    
     $ cd ~/fastfusion/
 
-    $ ./associate.py ~/data/rgbd_dataset_freiburg3_long_office_household/groundtruth.txt ~/data/rgbd_dataset_freiburg3_long_office_household/depth.txt > tmp.txt
+    $ python3 associate.py ~/data/rgbd_dataset_freiburg3_long_office_household/groundtruth.txt ~/data/rgbd_dataset_freiburg3_long_office_household/depth.txt > tmp.txt
 
-    $ ./associate.py tmp.txt ~/data/rgbd_dataset_freiburg3_long_office_household/rgb.txt > ~/data/rgbd_dataset_freiburg3_long_office_household/associate.txt
+    $ python3 associate.py tmp.txt ~/data/rgbd_dataset_freiburg3_long_office_household/rgb.txt > ~/data/rgbd_dataset_freiburg3_long_office_household/associate.txt
 
 The resulting text file should look as follows:
 
